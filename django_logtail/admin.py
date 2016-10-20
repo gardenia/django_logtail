@@ -50,8 +50,9 @@ class LogAdmin(admin.ModelAdmin):
         if seek_to > file_length:
             seek_to = file_length
 
-        if seek_to + app_settings.LOGTAIL_MAX_TAIL_BYTES < file_length:
-            seek_to = file_length - app_settings.LOGTAIL_MAX_TAIL_BYTES
+        if app_settings.LOGTAIL_MAX_TAIL_BYTES != -1:
+            if app_settings.LOGTAIL_MAX_TAIL_BYTES < file_length:
+                seek_to = file_length - app_settings.LOGTAIL_MAX_TAIL_BYTES
 
         try:
             context['log'] = file(log_file, 'r')
